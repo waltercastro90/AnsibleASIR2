@@ -1,0 +1,9 @@
+---
+- name: Mesaje del dia
+  hosts: all
+  tasks:
+    - name: Modifica mensaje del dia
+      copy:
+        content: "Sistema Gestionado por Ansible \n"
+        dest: /etc/motd
+...
