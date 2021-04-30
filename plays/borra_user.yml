@@ -1,0 +1,9 @@
+---
+- name: Borra usuario walter
+  hosts:
+  tasks:
+    - name: Borra usuario walter
+      user:
+        name: walter
+        state: absent
+        remove: yes
