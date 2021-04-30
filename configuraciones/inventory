@@ -1,0 +1,9 @@
+ [proxy]
+server0.lab.example.com
+
+[webservers]
+server[1:2].lab.example.com
+
+[database]
+server3.lab.example.com
+server4.lab.example.com
