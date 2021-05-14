@@ -1,0 +1,11 @@
+---        
+- name: copia fichero de repositorio preparado
+  hosts: all
+  tasks:   
+    - name: crea repositorio
+      copy:
+        src: /etc/yum.repos.d/rhel8-3.repo
+        dest: /etc/yum.repos.d/rhel8-3.repo
+        owner: root
+        mode: 0644
+           
