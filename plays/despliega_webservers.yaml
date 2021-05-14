@@ -41,7 +41,7 @@
         name: httpd
         enabled: yes
         state: reloaded
-		
+	
 - name: Testeo del apache
   hosts: localhost
   become: no
