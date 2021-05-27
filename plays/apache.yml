@@ -1,6 +1,0 @@
----
-- name: Trabajando con Roles
-  hosts: webservers
-  become: yes
-  roles:
-    - sample-apache

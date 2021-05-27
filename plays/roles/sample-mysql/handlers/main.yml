@@ -1,7 +1,0 @@
----
-# handlers file for sample-mysql
-
-- name: reiniciar mysql
-  service:
-    name: mysql
-    state: restarted
