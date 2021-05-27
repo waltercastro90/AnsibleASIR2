@@ -1,0 +1,13 @@
+---
+- name: Copia script secure.sql
+  copy:
+    dest: /tmp/secure.sql
+    src: files/secure.sql
+
+- name: Ejecuta securizacion
+  shell: mysql -u root < /tmp/secure.sql
+
+- name: Elimina script secure.sql
+  file:
+    path: /tmp/secure.sql
+    state: absent

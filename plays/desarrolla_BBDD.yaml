@@ -1,0 +1,20 @@
+- name: Desarrolla servidor MariaDB
+  hosts: database
+  tasks:
+    - name: Tareas basicas de instalacion
+      import_tasks: tasks/bbdd.yaml
+
+    - name: Securiza
+      import_tasks: tasks/securiza_mariadb.yaml
+
+    - name: Recupera Backup logico
+      import_tasks: tasks/recupera_backup.yaml
+
+    - name: Instala cliente MariaDB
+      delegate_to: localhost
+      delegate_facts: no
+      yum:
+        name: mariadb
+        state: present
+
+

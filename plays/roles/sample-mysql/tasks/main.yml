@@ -1,0 +1,91 @@
+---
+# tasks file for sample-mysql
+
+- name: Creacion de particion primaria
+  parted:
+    name: primaria
+    device: "{{ partition.device }}"
+    state: present
+    number: "{{ partition.number }}"
+    label: gpt
+    flags: lvm
+    part_start: "{{ partition.start }}"
+    part_end: "{{ partition.end }}"
+
+- name: crea grupo de volumenes
+  lvg:
+    vg: "{{ volume_group.name }}"
+    pvs: "{{ volume_group.device }}"
+
+
+- name: Crea volumen logico
+  lvol:
+    vg: "{{ logical_volume.vgroup }}"
+    lv: "{{ logical_volume.name }}"
+    size: "{{ logical_volume.size }}"
+  when: logical_volume.name not in ansible_lvm["lvs"]
+
+
+- name: Crea Filesystem tipo XFS
+  filesystem:
+    dev: /dev/{{ logical_volume.vgroup }}/{{ logical_volume.name }}
+    fstype: "{{ logical_volume.type }}"
+
+
+- name: monta volumen logico
+  mount:
+    path: "{{ logical_volume.mount_path }}"
+    src: /dev/{{ logical_volume.vgroup }}/{{ logical_volume.name }}
+    fstype: "{{ logical_volume.type }}"
+    opts: noatime
+    state: mounted
+
+
+- name: Instala paquete mysql-community-server
+  yum:
+    name: mysql-community-server
+    state: installed
+    
+
+- name: Permitir en firewall mysql puerto TCP 3360
+  firewalld:
+    port: 3306/tcp
+    immediate: yes
+    permanent: yes
+    state: enabled
+
+
+#Esta tarea no se pide, pero es necesaria para la tarea "cambia contraseña root de mysql"
+- name: Instala python3-PyMySQL
+  yum:
+    name: python3-PyMySQL
+    state: present
+
+
+- name: Start mysql
+  service:
+    name: mysql
+    enabled: yes
+    state: started
+
+
+- name: cambia contraseña root de mysql
+  mysql_user:
+    name: root
+    check_implicit_admin: yes
+    login_user: root
+    login_password: "{{ database_password }}"
+    priv: '*.*:ALL'
+    state: present
+
+
+- name: copia plantilla my.cnf.j2
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf
+  notify:
+    - reiniciar mysql
+
+
+...
+

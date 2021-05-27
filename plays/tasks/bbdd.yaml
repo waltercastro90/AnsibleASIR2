@@ -1,0 +1,20 @@
+---
+
+- name: Instala mariadb
+  yum:
+    name: mariadb-server
+    state: present
+
+- name: Servicio MariaDB arrancado y activado
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Abre firewall para MariaDB
+  firewalld:
+    service: mysql
+    state: enabled
+    permanent: yes
+    immediate: yes
+
