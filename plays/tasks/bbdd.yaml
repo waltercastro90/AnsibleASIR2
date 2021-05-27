@@ -7,7 +7,7 @@
 
 - name: Servicio MariaDB arrancado y activado
   service:
-    name: mariadb
+    name: mysql
     state: started
     enabled: true
 
