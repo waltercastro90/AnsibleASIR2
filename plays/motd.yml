@@ -1,9 +1,0 @@
----        
-- name: Mensaje del dia personalizado
-  hosts: all
-  tasks:   
-    - name: modifical motd
-      copy:
-        dest: /etc/motd
-        content: "{{ motd }}\n"
-        force: yes
